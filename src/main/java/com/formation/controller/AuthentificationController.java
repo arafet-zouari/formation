@@ -16,14 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.formation.entities.AuthToken;
 import com.formation.entities.LoginUser;
 
-import config.TokenProvider;
-import service.UserService;
+import com.formation.config.TokenProvider;
+import com.formation.service.UserService;
 
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 //@CrossOrigin(origins = "http://localhost:4200/", maxAge = 3600)
 @RestController
+
 @RequestMapping("/token")
 public class AuthentificationController {
 	 @Autowired

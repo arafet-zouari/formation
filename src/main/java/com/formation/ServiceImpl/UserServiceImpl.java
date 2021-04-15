@@ -1,4 +1,4 @@
-package ServiceImpl;
+package com.formation.ServiceImpl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,8 +17,8 @@ import com.formation.entities.Role;
 import com.formation.entities.User;
 import com.formation.entities.UserDto;
 
-import Dao.UserDao;
-import service.UserService;
+import com.formation.Dao.UserDao;
+import com.formation.service.UserService;
 
 @Service(value = "userService")
 public class UserServiceImpl implements UserDetailsService, UserService {
@@ -30,18 +30,18 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	private BCryptPasswordEncoder bcryptEncoder;
 
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = (User) userDao.findByUserusername(username);
+		User user = (User) userDao.findByUsername(username);
 		if(user == null){
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
-		return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPwd(), getAuthority(user));
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
 	}
 
 	private Set<SimpleGrantedAuthority> getAuthority(User user) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 		user.getRoles().forEach(role -> {
 			//authorities.add(new SimpleGrantedAuthority(role.getName()));
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + Role.getNom()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
 		});
 		return authorities;
 		//return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -54,34 +54,41 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	}
 
 	@Override
-	public void delete(long code) {
-		userDao.deleteById(code);
+	public void delete(long id) {
+		userDao.deleteById(id);
 	}
 
 	@Override
 	public User findOne(String username) {
-		return (User) userDao.findByUserusername(username);
+		return userDao.findByUsername(username);
 	}
-
-	@Override
-	public User findBycode(Long code) {
-		return (User) userDao.findById(code).get();
-	}
-	@Override
-	public User save(UserDto user) {
-	    User newUser = new User();
-	    newUser.setLogin(user.getUsername());
-	    newUser.setPwd(bcryptEncoder.encode(user.getPassword()));
-        return userDao.save(newUser);
-    }
 
 	@Override
 	public User findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return userDao.findById(id).get();
 	}
 
+	@Override
+    public User save(UserDto user) {
+	    User newUser = new User();
+	    newUser.setUsername(user.getUsername());
+	    newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
+	    newUser.setFname(user.getFname());
+	    newUser.setLname(user.getLname());
+	    newUser.setEmail(user.getEmail());
+	    newUser.setImageuser(user.getImageuser());
+        return userDao.save(newUser);
+    }
 	
-
-	
+	@Override
+    public User save(User user) {
+	    User newUser = new User();
+	    newUser.setUsername(user.getUsername());
+	    newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
+	    newUser.setFname(user.getFname());
+	    newUser.setLname(user.getLname());
+	    newUser.setEmail(user.getEmail());
+	    newUser.setImageuser(user.getImageuser());
+        return userDao.save(newUser);
+    }
 }

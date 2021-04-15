@@ -8,10 +8,10 @@
 		<version>2.2.2.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>Qatar.com</groupId>
-	<artifactId>Coupe_2022</artifactId>
+	<groupId>formation.com</groupId>
+	<artifactId>formation</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Coupe_2022</name>
+	<name>formation</name>
 	<description>Spring Boot project </description>
 	
 		<properties>

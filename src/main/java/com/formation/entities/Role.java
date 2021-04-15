@@ -9,36 +9,40 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Role implements Serializable {
+public class Role  {
 	
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)  
-	@Column(name="RoleId")
-	private Long IdRole;
-	 @Column
-	private static String Nom;
-	public Role() {
-		
-		// TODO Auto-generated constructor stub
-	}
-	public Role(Long idRole, String nom) {
-		super();
-		IdRole = idRole;
-		Nom = nom;
-	}
-	public Long getIdRole() {
-		return IdRole;
-	}
-	public void setIdRole(Long idRole) {
-		IdRole = idRole;
-	}
-	public static String getNom() {
-		return Nom;
-	}
-	public void setNom(String nom) {
-		Nom = nom;
-	}
+	 @Id
+	    @GeneratedValue(strategy= GenerationType.IDENTITY)
+	    private long id;
+
+	    @Column
+	    private String name;
+
+	    @Column
+	    private String description;
 	
+	    public long getId() {
+	        return id;
+	    }
+
+	    public void setId(long id) {
+	        this.id = id;
+	    }
+
+	    public String getName() {
+	        return name;
+	    }
+
+	    public void setName(String name) {
+	        this.name = name;
+	    }
+
+	    public String getDescription() {
+	        return description;
+	    }
+
+	    public void setDescription(String description) {
+	        this.description = description;
+	    }
 	
 }

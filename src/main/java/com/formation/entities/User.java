@@ -16,69 +16,105 @@ import javax.persistence.ManyToMany;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.formation.entities.Role;
+
 import javax.persistence.JoinColumn;
 
 @Entity
-public class User implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+public class User  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  
-	@Column(name="usercode")
-	private Long code;
-	private String Login;
-	private String pwd;
-	private int IdRole;
+	@Column(name="userid")
+	private Long id;
+	private String username;
+	private String email;
+	private String password;
+	private String fname;
+	private String lname;
+	private String imageuser;
 	
+	//@ManyToMany(mappedBy="users",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+		//@ManyToMany(mappedBy="users",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+		@JsonIgnore
+		
+		 @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	    @JoinTable(name = "USER_ROLES", joinColumns = {
+	            @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
+	            @JoinColumn(name = "ROLE_ID") })
+	    private Set<Role> roles;
 	
-	
-@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-@JoinTable(name = "USER_ROLES", joinColumns = {
-           @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
-           @JoinColumn(name = "ROLE_ID") })
-private Set<Role> roles;
-@JsonIgnore
-	
-	public User(Long code, String login, String pwd, int idRole) {
-		super();
-		this.code = code;
-		Login = login;
-		this.pwd = pwd;
-		IdRole = idRole;
+	public Long getId() {
+		return id;
 	}
+	
 	public User() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-	public Long getCode() {
-		return code;
-	}
-	public void setCode(Long code) {
-		this.code = code;
-	}
-	public String getLogin() {
-		return Login;
-	}
-	public void setLogin(String login) {
-		Login = login;
-	}
-	public String getPwd() {
-		return pwd;
-	}
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
-	}
-	public int getIdRole() {
-		return IdRole;
-	}
-	public void setIdRole(int idRole) {
-		IdRole = idRole;
-	}
-	public Iterable<SimpleGrantedAuthority> getRoles() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-		
 	
-}
+	public String getUsername() {
+        return username;
+    }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getFname() {
+		return fname;
+	}
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+	public String getLname() {
+		return lname;
+	}
+	public void setLname(String lname) {
+		this.lname = lname;
+	}
+
+
+
+	public String getImageuser() {
+		return imageuser;
+	}
+
+
+
+	public void setImageuser(String imageuser) {
+		this.imageuser = imageuser;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", password=" + password + ", fname=" + fname + ", lname=" + lname
+				+ ", imageuser=" + imageuser + "]";
+	}
+	public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+	
+	
+	
+	
+	
+
+}

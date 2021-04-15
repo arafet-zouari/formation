@@ -1,4 +1,4 @@
-package config;
+package com.formation.config;
 
 import java.io.IOException;
 import java.io.Serializable;

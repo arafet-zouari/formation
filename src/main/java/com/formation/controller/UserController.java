@@ -46,21 +46,21 @@ public class UserController {
 	    
 	}
 //pour ajouter un utilisateur
-	@PostMapping("/addusert")
+	@PostMapping("/signup")
 	public User createUser(@Valid @RequestBody User user) {
 	    return userv.save(user);
 	}
 //recherche d'un utilisateur par son id
 	
-	@GetMapping("/user/{code}")
-	public User getUserById(@PathVariable(value = "code") Long code) {
-	    return userv.findById(code).orElseThrow(null);
+	@GetMapping("/user/{id}")
+	public User getUserById(@PathVariable(value = "id") Long id) {
+	    return userv.findById(id).orElseThrow(null);
 	           // .orElseThrow(() -> new ResourceNotFoundException("User", "id", Id));
 	}
-	//delete user by idcode
-	@DeleteMapping("/user/{code}")
-	public ResponseEntity<?> deleteUser(@PathVariable(value = "code") Long usercode) {
-	    User user = userv.findById(usercode).orElseThrow(null);
+	//delete user by id
+	@DeleteMapping("/user/{id}")
+	public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Long userid) {
+	    User user = userv.findById(userid).orElseThrow(null);
 	            //.orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
 	   // userRepository.deleteById(userId);
@@ -70,16 +70,16 @@ public class UserController {
 	}
 	//update user
 	@PutMapping("/user/{id}")
-	public User updateUser(@PathVariable(value = "code") Long code,
+	public User updateUser(@PathVariable(value = "id") Long id,
 	                                        @Valid @RequestBody User userDetails) {
 
-	    User user = userv.findById(code).orElseThrow(null);
+	    User user = userv.findById(id).orElseThrow(null);
 	    
 	   
-	    user.setCode(userDetails.getCode());
-	    user.setLogin(userDetails.getLogin());
-	    user.setPwd(userDetails.getPwd());
-	    user.setIdRole(userDetails.getIdRole());
+	    
+	    user.setUsername(userDetails.getUsername());
+	    user.setPassword(userDetails.getPassword());
+	    
 
 	    User updatedUser = userv.save(user);
 	    return updatedUser;

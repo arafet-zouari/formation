@@ -1,22 +1,30 @@
 package com.formation.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.entities.Formation;
+import com.formation.entities.User;
 import com.formation.repository.FormationRepository;
+
+
 
 
 @RestController
@@ -27,7 +35,16 @@ public class FormationController {
 	@Autowired
 	FormationRepository Formationv;
 	
+	
+	@RequestMapping(value="/formation", method = RequestMethod.GET)
+	public List<Formation> getAllformation() {
+		List<Formation> pro = Formationv.findAll();
+
+        return pro;
+	    
+	}
 	//pour ajouter une formation
+	    //@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 		@PostMapping("/addFormation")
 		public Formation createFormation(@Valid @RequestBody Formation Formation) {
 		    return Formationv.save(Formation);
@@ -54,7 +71,7 @@ public class FormationController {
 		   
 		    Formation.setIdFormation(FormationDetails.getIdFormation());
 		    Formation.setTitre(FormationDetails.getTitre());
-		    Formation.setType_Formation(FormationDetails.getType_Formation());
+		   
 		   Formation.setAnnee(FormationDetails.getAnnee());
 		   Formation.setNb_session(FormationDetails.getNb_session());
 		   Formation.setDuree(FormationDetails.getDuree());

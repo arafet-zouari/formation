@@ -20,7 +20,7 @@ public class Formation  implements Serializable {
 	@Column(name="IdFormation")
 	private Long IdFormation;
 	private String Titre;
-	private TypeParticipant Type_Formation;
+	//private TypeParticipant Type_Formation;
 	private int annee;
 	private int Nb_session;
 	private int Duree;
@@ -30,12 +30,11 @@ public class Formation  implements Serializable {
 	
     private Domaine d;
 	
-	public Formation(Long idFormation, String titre, TypeParticipant type_Formation, int annee, int nb_session, int duree,
+	public Formation(Long idFormation, String titre,  int annee, int nb_session, int duree,
 			int idDomaine, float budget) {
 		super();
 		IdFormation = idFormation;
 		Titre = titre;
-		Type_Formation = type_Formation;
 		this.annee = annee;
 		Nb_session = nb_session;
 		Duree = duree;
@@ -58,12 +57,7 @@ public class Formation  implements Serializable {
 	public void setTitre(String titre) {
 		Titre = titre;
 	}
-	public TypeParticipant getType_Formation() {
-		return Type_Formation;
-	}
-	public void setType_Formation(TypeParticipant type_Formation) {
-		Type_Formation = type_Formation;
-	}
+	
 	public int getAnnee() {
 		return annee;
 	}

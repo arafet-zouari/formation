@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.formation.entities.User;
 import com.formation.entities.UserDto;
 
-import service.UserService;
+import com.formation.service.UserService;
 
 
 
