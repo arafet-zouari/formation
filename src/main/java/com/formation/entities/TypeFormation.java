@@ -1,5 +1,5 @@
 package com.formation.entities;
 
-public  enum TypeParticipant {
+public enum TypeFormation {
 	national,international ;
 }

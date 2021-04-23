@@ -16,20 +16,24 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 
 @Entity
 public class Domaine implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	@Autowired
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  
 	@Column(name="DomaineId")
 	private Long IdDomaine;
 	private String Libelle;
-	@OneToMany(mappedBy="d",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	private Set<Domaine> d= new HashSet<Domaine>();
+	
+	@JsonBackReference
+	@OneToMany(mappedBy="dom",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	private Set<Formation> F= new HashSet<Formation>();
 	
 	public Domaine() {
 		
@@ -63,6 +67,17 @@ public class Domaine implements Serializable {
 		// TODO Auto-generated method stub
 		
 	}
+	public Set<Formation> getF() {
+		return F;
+	}
+	public void setF(Set<Formation> f) {
+		F = f;
+	}
+	@Override
+	public String toString() {
+		return "Domaine [IdDomaine=" + IdDomaine + ", Libelle=" + Libelle + ", F=" + F + "]";
+	}
+	
 	
 	
 

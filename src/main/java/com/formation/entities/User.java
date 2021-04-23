@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.formation.entities.Role;
@@ -37,7 +38,7 @@ public class User  {
 	//@ManyToMany(mappedBy="users",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 		//@ManyToMany(mappedBy="users",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 		@JsonIgnore
-		
+		@JsonBackReference
 		 @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	    @JoinTable(name = "USER_ROLES", joinColumns = {
 	            @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {

@@ -1,11 +1,16 @@
 package com.formation.controller;
 
 
-import javax.validation.Valid;
+import java.util.List;
 
+import javax.validation.Valid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,16 +19,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.entities.Domaine;
+import com.formation.entities.User;
 import com.formation.repository.DomaineRepository;
 
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/Domaine")
+@RequestMapping("/api")
 public class DomaineController {
-	//private static final Logger logger = LogManager.getLogger(DomaineController.class);
-	
+	private static final Logger logger = LogManager.getLogger(DomaineController.class);
+	@Autowired
 	DomaineRepository Domainev;
+	
+	@GetMapping("/Domaines")
+	public List<Domaine> getAllDomaines() {
+		List<Domaine> pro = Domainev.findAll();
+		
+        return pro;
+	    
+	}
+	
 	
 	//pour ajouter un organisme
 		@PostMapping("/addDomaine")

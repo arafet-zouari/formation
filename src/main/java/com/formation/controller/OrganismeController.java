@@ -1,5 +1,7 @@
 package com.formation.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.formation.entities.Formation;
 import com.formation.entities.Organisme;
 import com.formation.repository.OrganismeRepository;
 
@@ -23,9 +27,18 @@ import com.formation.repository.OrganismeRepository;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class OrganismeController {
-	private static final Logger logger = LogManager.getLogger(OrganismeController.class);
+	//private static final Logger logger = LogManager.getLogger(OrganismeController.class);
 	@Autowired
 	OrganismeRepository Organismev;
+	
+	@RequestMapping(value="/organismes", method = RequestMethod.GET)
+	public List<Organisme> getAllOrganisme() {
+		List<Organisme> pro = Organismev.findAll();
+
+        return pro;
+	    
+	}
+	
 	
 	//pour ajouter un organisme
 		@PostMapping("/addOrganisme")

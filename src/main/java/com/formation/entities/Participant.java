@@ -1,16 +1,25 @@
 package com.formation.entities;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.formation.entities.TypeParticipant; 
+import com.formation.entities.Pays; 
 
 @Entity
 public class Participant implements Serializable {
@@ -23,26 +32,33 @@ public class Participant implements Serializable {
 	private String Nom;
 	private String Prenom;
 	private String Profil;
-	private int IdOrganisme;
-	private int IdPays;
-	private int IdProfil;
+	private TypeParticipant typeP; 
 	private String Email;
 	private int Tlf;
-@ManyToOne
 	
+	@JsonBackReference
+	@ManyToOne
+    private Pays pays;
+	
+	@JsonIgnore
+	@JsonBackReference
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   @JoinTable(name = "Particicpant_session", joinColumns = {
+           @JoinColumn(name = "id_participant") }, inverseJoinColumns = {
+           @JoinColumn(name = "id_session") })
+   private Set<Session_de_Formation> sessions;
+   @JsonBackReference
+    @ManyToOne
     private Profil p;
-	public Participant(Long idParticipant, String nom, String prenom, String profil, int idOrganisme, int idPays,
-			int idProfil, String email, int tlf) {
+	public Participant(Long idParticipant, String nom, String prenom, String profil, int idOrganisme,String email, int tlf,TypeParticipant type ) {
 		super();
 		IdParticipant = idParticipant;
 		Nom = nom;
 		Prenom = prenom;
 		Profil = profil;
-		IdOrganisme = idOrganisme;
-		IdPays = idPays;
-		IdProfil = idProfil;
 		Email = email;
 		Tlf = tlf;
+		typeP=type; 
 	}
 	public Participant() {
 		super();
@@ -72,29 +88,24 @@ public class Participant implements Serializable {
 	public void setProfil(String profil) {
 		Profil = profil;
 	}
-	public int getIdOrganisme() {
-		return IdOrganisme;
-	}
-	public void setIdOrganisme(int idOrganisme) {
-		IdOrganisme = idOrganisme;
-	}
-	public int getIdPays() {
-		return IdPays;
-	}
-	public void setIdPays(int idPays) {
-		IdPays = idPays;
-	}
-	public int getIdProfil() {
-		return IdProfil;
-	}
-	public void setIdProfil(int idProfil) {
-		IdProfil = idProfil;
-	}
 	public String getEmail() {
 		return Email;
 	}
 	public void setEmail(String email) {
 		Email = email;
+	}
+	
+	public Set<Session_de_Formation> getSessions() {
+		return sessions;
+	}
+	public void setSessions(Set<Session_de_Formation> sessions) {
+		this.sessions = sessions;
+	}
+	public TypeParticipant getTypeP() {
+		return typeP;
+	}
+	public void setTypeP(TypeParticipant typeP) {
+		this.typeP = typeP;
 	}
 	public int getTlf() {
 		return Tlf;

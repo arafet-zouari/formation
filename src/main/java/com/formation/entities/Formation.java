@@ -9,7 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.formation.entities.TypeFormation;
 
 @Entity
 public class Formation  implements Serializable {
@@ -20,26 +21,25 @@ public class Formation  implements Serializable {
 	@Column(name="IdFormation")
 	private Long IdFormation;
 	private String Titre;
-	//private TypeParticipant Type_Formation;
 	private int annee;
 	private int Nb_session;
 	private int Duree;
-	private int IdDomaine ;
 	private float Budget;
-@ManyToOne
-	
-    private Domaine d;
+	private TypeFormation typeF;
+	@JsonBackReference
+    @ManyToOne
+    private Domaine dom;
 	
 	public Formation(Long idFormation, String titre,  int annee, int nb_session, int duree,
-			int idDomaine, float budget) {
+			 float budget,TypeFormation type) {
 		super();
 		IdFormation = idFormation;
 		Titre = titre;
 		this.annee = annee;
 		Nb_session = nb_session;
 		Duree = duree;
-		IdDomaine = idDomaine;
 		Budget = budget;
+		typeF=type;
 	}
 	public Formation() {
 		super();
@@ -76,17 +76,29 @@ public class Formation  implements Serializable {
 	public void setDuree(int duree) {
 		Duree = duree;
 	}
-	public int getIdDomaine() {
-		return IdDomaine;
-	}
-	public void setIdDomaine(int idDomaine) {
-		IdDomaine = idDomaine;
-	}
+	
 	public float getBudget() {
 		return Budget;
 	}
 	public void setBudget(float budget) {
 		Budget = budget;
+	}
+	public TypeFormation getTypeF() {
+		return typeF;
+	}
+	public void setTypeF(TypeFormation typeF) {
+		this.typeF = typeF;
+	}
+	public Domaine getDom() {
+		return dom;
+	}
+	public void setDom(Domaine dom) {
+		this.dom = dom;
+	}
+	@Override
+	public String toString() {
+		return "Formation [IdFormation=" + IdFormation + ", Titre=" + Titre + ", annee=" + annee + ", Nb_session="
+				+ Nb_session + ", Duree=" + Duree + ", Budget=" + Budget + ", typeF=" + typeF + ", dom=" + dom + "]";
 	}
 	
 	

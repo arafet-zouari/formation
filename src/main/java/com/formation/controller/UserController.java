@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +17,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.entities.User;
 import com.formation.repository.UserRepository;
+
+import com.formation.controller.UserController;
+import com.formation.entities.UserDto;
+import com.formation.service.UserService;
 
 
 @RestController
@@ -30,78 +36,64 @@ public class UserController {
 
 
 	private static final Logger logger = LogManager.getLogger(UserController.class);
-	@Autowired
-	UserRepository userv;
+	  @Autowired
+	private UserService userService;
 	
-	@GetMapping("/users")
+	
+	 @PreAuthorize("hasRole('ADMIN')")
+	    @RequestMapping(value="/users", method = RequestMethod.GET)
 	public List<User> getAllUsers() {
-		List<User> pro = userv.findAll();
+		List<User> pro = userService.findAll();
 
 		for (User user : pro) {
 			logger.debug("log:     "+user);
 			System.out.println("sysout:   "+user);
 			
 		}
-        return pro;
+      return pro;
 	    
 	}
-//pour ajouter un utilisateur
+
 	@PostMapping("/signup")
-	public User createUser(@Valid @RequestBody User user) {
-	    return userv.save(user);
+	public User createUser(@Valid @RequestBody UserDto user) {
+	    return userService.save(user);
 	}
-//recherche d'un utilisateur par son id
-	
+
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/user/{id}")
-	public User getUserById(@PathVariable(value = "id") Long id) {
-	    return userv.findById(id).orElseThrow(null);
+	public User getUserById(@PathVariable(value = "id") Long Id) {
+	    return userService.findById(Id);
 	           // .orElseThrow(() -> new ResourceNotFoundException("User", "id", Id));
 	}
-	//delete user by id
+	@PreAuthorize("hasRole('USER')")
 	@DeleteMapping("/user/{id}")
-	public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Long userid) {
-	    User user = userv.findById(userid).orElseThrow(null);
+	public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Long userId) {
+	    User user = userService.findById(userId);
 	            //.orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
 	   // userRepository.deleteById(userId);
-	    userv.delete(user);
+	    userService.delete(user.getId());
 
 	    return ResponseEntity.ok().build();
 	}
-	//update user
+	@PreAuthorize("hasRole('USER')")
 	@PutMapping("/user/{id}")
-	public User updateUser(@PathVariable(value = "id") Long id,
+	public User updateUser(@PathVariable(value = "id") Long Id,
 	                                        @Valid @RequestBody User userDetails) {
 
-	    User user = userv.findById(id).orElseThrow(null);
+	    User user =userService.findById(Id);
 	    
-	   
-	    
-	    user.setUsername(userDetails.getUsername());
+	    user.setEmail(userDetails.getEmail());
 	    user.setPassword(userDetails.getPassword());
+	    user.setFname(userDetails.getFname());
+	    user.setLname(userDetails.getLname());
+	    user.setImageuser(userDetails.getImageuser());
 	    
-
-	    User updatedUser = userv.save(user);
+	    User updatedUser = userService.save(user);
 	    return updatedUser;
 	}
 	
 	
-
-	/*@PutMapping("/affecter/{uid}/{pid}")
-	public void affecterUser(@PathVariable(value = "uid") Long Id,
-			@PathVariable(value = "pid") Long Idp,@Valid  Project pro) {
-
-	    
-	   List<User> list=new ArrayList<>();
-		   User user = userv.findById(Id).get();
-		   
-		   list.add(user);
-		   proj.setUsers(list);
-		  //User affecterUser= 
-		   pserv.save(proj);
-		//return affecterUser;*/
-	
-
 	}
 	
 	

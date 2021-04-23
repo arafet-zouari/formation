@@ -1,5 +1,7 @@
 package com.formation.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.formation.entities.Organisme;
 import com.formation.entities.Participant;
 import com.formation.repository.ParticipantRepository;
 
@@ -26,6 +30,16 @@ public class ParticipantController {
 	private static final Logger logger = LogManager.getLogger(ParticipantController.class);
 	@Autowired
 	ParticipantRepository Participantv;
+	
+	
+	@RequestMapping(value="/particicpants", method = RequestMethod.GET)
+	public List<Participant> getAllParticipant() {
+		List<Participant> pro = Participantv.findAll();
+
+        return pro;
+	    
+	}
+	
 	
 	//pour ajouter un participant 
 		@PostMapping("/addparticipant")

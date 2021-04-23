@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 public class Profil  implements Serializable {
@@ -24,8 +26,10 @@ public class Profil  implements Serializable {
 	@Column(name="ProfilId")
 	private Long IdProfil;
 	private String Libelle;
+	
+	@JsonBackReference
 	@OneToMany(mappedBy="p",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	private Set<Participant> mk1 = new HashSet<Participant>();
+	private Set<Participant> participant = new HashSet<Participant>();
 	
 	public Profil(Long idProfil, String libelle) {
 		super();
@@ -47,6 +51,12 @@ public class Profil  implements Serializable {
 	}
 	public void setLibelle(String libelle) {
 		Libelle = libelle;
+	}
+	public Set<Participant> getParticipant() {
+		return participant;
+	}
+	public void setParticipant(Set<Participant> participant) {
+		this.participant = participant;
 	}
 	
 	

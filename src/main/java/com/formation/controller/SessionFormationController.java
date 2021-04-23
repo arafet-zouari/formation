@@ -1,5 +1,7 @@
 package com.formation.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.formation.entities.Profil;
 import com.formation.entities.Session_de_Formation;
 import com.formation.repository.Session_de_FormationRepository;
 
@@ -25,7 +29,19 @@ import com.formation.repository.Session_de_FormationRepository;
 public class SessionFormationController {
 	private static final Logger logger = LogManager.getLogger(SessionFormationController.class);
 	
+	
+	
 	Session_de_FormationRepository Session_de_Formationv;
+	
+	@RequestMapping(value="/SessionFormation", method = RequestMethod.GET)
+	public List<Session_de_Formation> getAllSessionFormation() {
+		List<Session_de_Formation> pro = Session_de_Formationv.findAll();
+
+        return pro;
+	    
+	}
+	
+	
 	
 	//pour ajouter une formation
 		@PostMapping("/addSession_de_Formation")
@@ -53,9 +69,6 @@ public class SessionFormationController {
 		    
 		   
 			Session_de_Formation.setIdSession(SessionFormationDetails.getIdSession());
-			Session_de_Formation.setIdFormateur(SessionFormationDetails.getIdFormateur());
-			Session_de_Formation.setIdOrganisme(SessionFormationDetails.getIdOrganisme());
-			Session_de_Formation.setIdFormation(SessionFormationDetails.getIdFormation());
 			Session_de_Formation.setLieu(SessionFormationDetails.getLieu());
 			Session_de_Formation.setDate_Debut(SessionFormationDetails.getDate_Debut());
 			Session_de_Formation.setDate_Fin(SessionFormationDetails.getDate_Fin());

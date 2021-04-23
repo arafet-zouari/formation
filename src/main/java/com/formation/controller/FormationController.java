@@ -21,8 +21,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.entities.Formation;
+import com.formation.entities.TypeFormation;
 import com.formation.entities.User;
 import com.formation.repository.FormationRepository;
+import com.formation.repository.DomaineRepository;
+
+import com.formation.entities.Domaine;
+
 
 
 
@@ -34,6 +39,8 @@ public class FormationController {
 	private static final Logger logger = LogManager.getLogger(FormationController.class);
 	@Autowired
 	FormationRepository Formationv;
+	@Autowired
+	DomaineRepository Domainev;
 	
 	
 	@RequestMapping(value="/formation", method = RequestMethod.GET)
@@ -45,9 +52,29 @@ public class FormationController {
 	}
 	//pour ajouter une formation
 	    //@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-		@PostMapping("/addFormation")
-		public Formation createFormation(@Valid @RequestBody Formation Formation) {
-		    return Formationv.save(Formation);
+		@PostMapping("/addFormation/{eid}")
+		public Formation createFormation(@PathVariable(value = "eid") Long Id, @Valid @RequestBody Formation formationDetails) {
+
+		    
+		       Formation me=new Formation();
+			   Domaine domaine = Domainev.findById(Id).orElseThrow(null);
+			   
+			      
+				  me.setDom(domaine);
+			      me.setTitre(formationDetails.getTitre());
+			      me.setAnnee(formationDetails.getAnnee());
+			      me.setNb_session(formationDetails.getNb_session());
+			      me.setDuree(formationDetails.getDuree());
+			      me.setBudget(formationDetails.getBudget());
+			      me.setTypeF(formationDetails.getTypeF());
+			      
+			      
+
+			  //User affecterUser= 
+			   return Formationv.save(me);
+			//return affecterUser;
+		
+
 		}
 		
 	//delete Formation by IdFormation
@@ -75,7 +102,6 @@ public class FormationController {
 		   Formation.setAnnee(FormationDetails.getAnnee());
 		   Formation.setNb_session(FormationDetails.getNb_session());
 		   Formation.setDuree(FormationDetails.getDuree());
-		   Formation.setIdDomaine(FormationDetails.getIdDomaine());
 		   Formation.setBudget(FormationDetails.getBudget());
 
 		    Formation updatedFormation = Formationv.save(Formation);

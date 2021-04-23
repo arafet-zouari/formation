@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 
 
@@ -28,10 +30,13 @@ public class Organisme implements Serializable {
 	@Column(name="OrganismeId")
 	private Long IdOrganisme;
 	private String Libelle;
-	@OneToMany(mappedBy="session",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	private Set<Session_de_Formation> mk1 = new HashSet<Session_de_Formation>();
+	
+	@JsonBackReference
+	@OneToMany(mappedBy="org",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	private Set<Session_de_Formation> session = new HashSet<Session_de_Formation>();
+	@JsonBackReference
 	@OneToMany(mappedBy="organismes",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	private Set<Formateur> mk = new HashSet<Formateur>();
+	private Set<Formateur> formateur = new HashSet<Formateur>();
 	public Organisme(Long idOrganisme, String libelle) {
 		super();
 		IdOrganisme = idOrganisme;
@@ -52,6 +57,18 @@ public class Organisme implements Serializable {
 	}
 	public void setLibelle(String libelle) {
 		Libelle = libelle;
+	}
+	public Set<Session_de_Formation> getSession() {
+		return session;
+	}
+	public void setSession(Set<Session_de_Formation> session) {
+		this.session = session;
+	}
+	public Set<Formateur> getFormateur() {
+		return formateur;
+	}
+	public void setFormateur(Set<Formateur> formateur) {
+		this.formateur = formateur;
 	}
 	
 	

@@ -2,14 +2,23 @@ package com.formation.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Session_de_Formation implements Serializable {
@@ -19,26 +28,29 @@ public class Session_de_Formation implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  
 	@Column(name="SessionId")
 	private Long IdSession;
-	private int IdFormateur;
-	private int IdOrganisme;
-	private int IdFormation;
 	private String Lieu;
 	private Date Date_Debut;
 	private Date Date_Fin;
 	private int nb_participant;
-@ManyToOne
 	
-    private Formateur sess;
-@ManyToOne
+	@JsonBackReference
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "Session_Formation", joinColumns = {
+           @JoinColumn(name = "Id_Session") }, inverseJoinColumns = {
+           @JoinColumn(name = "id_Formation") })
+   private Set<Formation> formations;
+
+	@JsonBackReference
+    @ManyToOne
+    private Formateur formateur;
 	
-    private Organisme session;
-	public Session_de_Formation(Long idSession, int idFormateur, int idOrganisme, int idFormation, String lieu,
-			Date date_Debut, Date date_Fin, int nb_participant) {
+	@JsonBackReference
+    @ManyToOne
+    private Organisme org;
+	public Session_de_Formation(Long idSession, String lieu,Date date_Debut, Date date_Fin, int nb_participant) {
 		super();
 		IdSession = idSession;
-		IdFormateur = idFormateur;
-		IdOrganisme = idOrganisme;
-		IdFormation = idFormation;
 		Lieu = lieu;
 		Date_Debut = date_Debut;
 		Date_Fin = date_Fin;
@@ -51,27 +63,7 @@ public class Session_de_Formation implements Serializable {
 	public Long getIdSession() {
 		return IdSession;
 	}
-	public void setIdSession(long idSession) {
-		IdSession = idSession;
-	}
-	public int getIdFormateur() {
-		return IdFormateur;
-	}
-	public void setIdFormateur(int idFormateur) {
-		IdFormateur = idFormateur;
-	}
-	public int getIdOrganisme() {
-		return IdOrganisme;
-	}
-	public void setIdOrganisme(int idOrganisme) {
-		IdOrganisme = idOrganisme;
-	}
-	public int getIdFormation() {
-		return IdFormation;
-	}
-	public void setIdFormation(int idFormation) {
-		IdFormation = idFormation;
-	}
+	
 	public String getLieu() {
 		return Lieu;
 	}
@@ -95,6 +87,15 @@ public class Session_de_Formation implements Serializable {
 	}
 	public void setNb_participant(int nb_participant) {
 		this.nb_participant = nb_participant;
+	}
+	public void setIdSession(Long idSession) {
+		IdSession = idSession;
+	}
+	public Set<Formation> getFormations() {
+		return formations;
+	}
+	public void setFormations(Set<Formation> formations) {
+		this.formations = formations;
 	}
 	
 	

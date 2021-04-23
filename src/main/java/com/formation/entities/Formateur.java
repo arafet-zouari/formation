@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 
 
@@ -34,23 +36,22 @@ public class Formateur implements Serializable {
 	private String prenom;
 	private String Email;
 	private int Tlf;
-	private int IdOrganisme;
 	private String Type;
-	@OneToMany(mappedBy="sess",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	private Set<Session_de_Formation> mk = new HashSet<Session_de_Formation>();
+	@JsonBackReference
+	@OneToMany(mappedBy="formateur",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	private Set<Session_de_Formation> sess = new HashSet<Session_de_Formation>();
 	
-@ManyToOne
-	
+	@JsonBackReference
+    @ManyToOne
     private Organisme organismes;
 
-	public Formateur(Long idFormateur, String nom, String prenom, String email, int tlf, int idOrganisme, String type) {
+	public Formateur(Long idFormateur, String nom, String prenom, String email, int tlf, String type) {
 		super();
 		IdFormateur = idFormateur;
 		this.nom = nom;
 		this.prenom = prenom;
 		Email = email;
 		Tlf = tlf;
-		IdOrganisme = idOrganisme;
 		Type = type;
 	}
 	public Formateur() {
@@ -87,17 +88,18 @@ public class Formateur implements Serializable {
 	public void setTlf(int tlf) {
 		Tlf = tlf;
 	}
-	public int getIdOrganisme() {
-		return IdOrganisme;
-	}
-	public void setIdOrganisme(int idOrganisme) {
-		IdOrganisme = idOrganisme;
-	}
+	
 	public String getType() {
 		return Type;
 	}
 	public void setType(String type) {
 		Type = type;
+	}
+	public Set<Session_de_Formation> getSess() {
+		return sess;
+	}
+	public void setSess(Set<Session_de_Formation> sess) {
+		this.sess = sess;
 	}
 	
 	
