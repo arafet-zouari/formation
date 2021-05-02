@@ -21,7 +21,10 @@ import org.apache.logging.log4j.Logger;
 
 import com.formation.entities.Domaine;
 import com.formation.entities.Formateur;
+import com.formation.entities.Formation;
+import com.formation.entities.Organisme;
 import com.formation.repository.FormateurRepository;
+import com.formation.repository.OrganismeRepository;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -30,7 +33,8 @@ public class FormateurController {
 	private static final Logger logger = LogManager.getLogger(FormateurController.class);
 	@Autowired
 	FormateurRepository Formateurv;
-	
+	@Autowired
+	OrganismeRepository organismeR;
 	
 	@RequestMapping(value="/formateur", method = RequestMethod.GET)
 	public List<Formateur> getAllFormateurs() {
@@ -41,40 +45,56 @@ public class FormateurController {
 	    
 	}
 	
-	
+	@GetMapping("/formateur/{id}")
+	public Formateur getFormateurById(@PathVariable(value = "id") Long Id) {
+	    return Formateurv.findById(Id).orElseThrow(null);
+	          
+	}
 	//pour ajouter un formateur
-		@PostMapping("/addFormateur")
-		public Formateur createFormateur(@Valid @RequestBody Formateur Formateur) {
-		    return Formateurv.save(Formateur);
+		@PostMapping("/addFormateur/{Organismeid}")
+		public Formateur createFormateur(@PathVariable(value = "Organismeid") Long Id,@Valid @RequestBody Formateur formateurDetails) {
+			
+			
+			   Formateur formateur=new Formateur();
+			   Organisme organisme = organismeR.findById(Id).orElseThrow(null);
+			   
+			      
+			 formateur.setOrganismes(organisme);
+			 formateur.setNom(formateurDetails.getNom());   
+			 formateur.setPrenom(formateurDetails.getPrenom());   
+			 formateur.setEmail(formateurDetails.getEmail());   
+			 formateur.setTlf(formateurDetails.getTlf());
+			 formateur.setType(formateurDetails.getType());
+		    return Formateurv.save(formateur);
 		}
 		
 	//delete user by IdFormateur
-		@DeleteMapping("/Formateur/{IdFormateur}")
+		@DeleteMapping("/DeleteFormateur/{IdFormateur}")
 			public ResponseEntity<?> deleteFormateur(@PathVariable(value = "IdFormateur") Long IdFormateur) {
-			    Formateur Formateur = Formateurv.findById(IdFormateur).orElseThrow(null);
+			    Formateur formateur = Formateurv.findById(IdFormateur).orElseThrow(null);
 		    		//-> new ResourceNotFoundException("Formateur", "IdFormateur", IdFormateur));
 
 		   //FormateurRepository.deleteById(IdFormateur);
-		    Formateurv.delete(Formateur);
+		    Formateurv.delete(formateur);
 
 		    return ResponseEntity.ok().build();
 		}
 		//update Formateur
-		@PutMapping("/FormateurId/{id}")
+		@PutMapping("/FormateurId/{IdFormateur}")
 		public Formateur updateFormateur(@PathVariable(value = "IdFormateur") Long IdFormateur,
-		                                        @Valid @RequestBody Formateur FormateurDetails) {
+		                                        @Valid @RequestBody Formateur formateurDetails) {
 
 		    
 		    
-		    Formateur Formateur = Formateurv.findById(IdFormateur).orElseThrow(null);
-		    Formateur.setIdFormateur(FormateurDetails.getIdFormateur());
-		    Formateur.setNom(FormateurDetails.getNom());
-		    Formateur.setPrenom(FormateurDetails.getPrenom());
-		   Formateur.setEmail(FormateurDetails.getEmail());
-		   Formateur.setTlf(FormateurDetails.getTlf());
-		   Formateur.setType(FormateurDetails.getType());
+		    Formateur formateur = Formateurv.findById(IdFormateur).orElseThrow(null);
+			
+				 formateur.setNom(formateurDetails.getNom());   
+				 formateur.setPrenom(formateurDetails.getPrenom());   
+				 formateur.setEmail(formateurDetails.getEmail());   
+				 formateur.setTlf(formateurDetails.getTlf());
+				 formateur.setType(formateurDetails.getType());
 
-		    Formateur updatedFormateur = Formateurv.save(Formateur);
+		    Formateur updatedFormateur = Formateurv.save(formateur);
 		    return updatedFormateur;
 		}
 		

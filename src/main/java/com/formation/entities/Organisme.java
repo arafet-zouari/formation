@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -31,10 +32,10 @@ public class Organisme implements Serializable {
 	private Long IdOrganisme;
 	private String Libelle;
 	
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy="org",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	private Set<Session_de_Formation> session = new HashSet<Session_de_Formation>();
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy="organismes",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	private Set<Formateur> formateur = new HashSet<Formateur>();
 	public Organisme(Long idOrganisme, String libelle) {

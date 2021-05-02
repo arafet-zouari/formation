@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity 
 public class Pays implements Serializable {
@@ -25,7 +26,7 @@ public class Pays implements Serializable {
 	private Long payId;
 	private String libele ;
 	
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy="pays",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	private Set<Participant> participant = new HashSet<Participant>();
 	

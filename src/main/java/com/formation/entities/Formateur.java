@@ -101,6 +101,12 @@ public class Formateur implements Serializable {
 	public void setSess(Set<Session_de_Formation> sess) {
 		this.sess = sess;
 	}
+	public Organisme getOrganismes() {
+		return organismes;
+	}
+	public void setOrganismes(Organisme organismes) {
+		this.organismes = organismes;
+	}
 	
 	
 	

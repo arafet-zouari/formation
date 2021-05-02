@@ -1,6 +1,7 @@
 package com.formation.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -22,29 +23,52 @@ import com.formation.entities.Role;
 
 import javax.persistence.JoinColumn;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 @Entity
+@Table(	name = "users", 
+		uniqueConstraints = { 
+			@UniqueConstraint(columnNames = "username"),
+			@UniqueConstraint(columnNames = "email") 
+		})
 public class User  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  
 	@Column(name="userid")
 	private Long id;
+	
+	@NotBlank
+	@Size(max = 20)
 	private String username;
+	
+	@NotBlank
+	@Size(max = 50)
+	@Email
 	private String email;
+	@NotBlank
+	@Size(max = 120)
 	private String password;
 	private String fname;
 	private String lname;
 	private String imageuser;
 	
-	//@ManyToMany(mappedBy="users",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-		//@ManyToMany(mappedBy="users",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	
 		@JsonIgnore
 		@JsonBackReference
-		 @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	    @JoinTable(name = "USER_ROLES", joinColumns = {
-	            @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
-	            @JoinColumn(name = "ROLE_ID") })
-	    private Set<Role> roles;
-	
+		@ManyToMany(fetch = FetchType.LAZY)
+		@JoinTable(	name = "user_roles", 
+					joinColumns = @JoinColumn(name = "user_id"), 
+					inverseJoinColumns = @JoinColumn(name = "role_id"))
+		private Set<Role> roles = new HashSet<>();
+
+	public User(String username, String email, String password) {
+	this.username = username;
+	this.email = email;
+    this.password = password;
+		}
 	public Long getId() {
 		return id;
 	}
@@ -112,6 +136,18 @@ public class User  {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+	public User(  String username,  @Email String email,
+			 String password, String fname, String lname, String imageuser, Set<Role> roles) {
+		super();
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.fname = fname;
+		this.lname = lname;
+		this.imageuser = imageuser;
+		this.roles = roles;
+	}
 	
 	
 	

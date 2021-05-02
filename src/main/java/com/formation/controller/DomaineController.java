@@ -2,12 +2,14 @@ package com.formation.controller;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,14 +41,19 @@ public class DomaineController {
 	    
 	}
 	
-	
-	//pour ajouter un organisme
+	@GetMapping("/Domaine/{id}")
+	public Domaine getDomaineById(@PathVariable(value = "id") Long Id) {
+	    return Domainev.findById(Id).orElseThrow(null);
+	          
+	} 
+	//("hasRole('ADMIN')")
+
 		@PostMapping("/addDomaine")
 		public Domaine createDomaine(@Valid @RequestBody Domaine Domaine) {
 		    return Domainev.save(Domaine);
 		}
 		
-	//delete Organisme by IdOrganisme
+	
 		@DeleteMapping("/Domaine/{IdDomaine}")
 		
 			public ResponseEntity<?> deleteDomaine(@PathVariable(value = "IdDomaine") Long IdDomaine) {
@@ -57,7 +64,7 @@ public class DomaineController {
 
 		    return ResponseEntity.ok().build();
 		}
-		//update Organisme
+	
 		@PutMapping("/IdDomaine/{id}")
 		public Domaine updateDomaine(@PathVariable(value = "IdDomaine") Long IdDomaine,
 		                                        @Valid @RequestBody Domaine DomaineDetails) {

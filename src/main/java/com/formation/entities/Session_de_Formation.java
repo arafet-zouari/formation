@@ -33,19 +33,19 @@ public class Session_de_Formation implements Serializable {
 	private Date Date_Fin;
 	private int nb_participant;
 	
-	@JsonBackReference
 	@JsonIgnore
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "Session_Formation", joinColumns = {
            @JoinColumn(name = "Id_Session") }, inverseJoinColumns = {
            @JoinColumn(name = "id_Formation") })
    private Set<Formation> formations;
 
-	@JsonBackReference
+	@JsonIgnore
     @ManyToOne
     private Formateur formateur;
 	
-	@JsonBackReference
+	@JsonIgnore
     @ManyToOne
     private Organisme org;
 	public Session_de_Formation(Long idSession, String lieu,Date date_Debut, Date date_Fin, int nb_participant) {
@@ -96,6 +96,18 @@ public class Session_de_Formation implements Serializable {
 	}
 	public void setFormations(Set<Formation> formations) {
 		this.formations = formations;
+	}
+	public Formateur getFormateur() {
+		return formateur;
+	}
+	public void setFormateur(Formateur formateur) {
+		this.formateur = formateur;
+	}
+	public Organisme getOrg() {
+		return org;
+	}
+	public void setOrg(Organisme org) {
+		this.org = org;
 	}
 	
 	

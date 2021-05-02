@@ -27,6 +27,7 @@ import com.formation.repository.FormationRepository;
 import com.formation.repository.DomaineRepository;
 
 import com.formation.entities.Domaine;
+import com.formation.entities.Formateur;
 
 
 
@@ -50,10 +51,16 @@ public class FormationController {
         return pro;
 	    
 	}
+	
+	@GetMapping("/Formation/{id}")
+	public Formation getFormationById(@PathVariable(value = "id") Long Id) {
+	    return Formationv.findById(Id).orElseThrow(null);
+	          
+	}
 	//pour ajouter une formation
 	    //@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-		@PostMapping("/addFormation/{eid}")
-		public Formation createFormation(@PathVariable(value = "eid") Long Id, @Valid @RequestBody Formation formationDetails) {
+		@PostMapping("/addFormation/{Domaineid}")
+		public Formation createFormation(@PathVariable(value = "Domaineid") Long Id, @Valid @RequestBody Formation formationDetails) {
 
 		    
 		       Formation me=new Formation();
@@ -69,10 +76,8 @@ public class FormationController {
 			      me.setTypeF(formationDetails.getTypeF());
 			      
 			      
-
-			  //User affecterUser= 
 			   return Formationv.save(me);
-			//return affecterUser;
+			
 		
 
 		}
@@ -89,23 +94,21 @@ public class FormationController {
 		    return ResponseEntity.ok().build();
 		}
 		//update Formation
-		@PutMapping("/FormationId/{IdFormation}")
+		@PutMapping("/FormationId/{IdFormation}/{IdDomaine}")
 		public Formation updateFormation(@PathVariable(value = "IdFormation") Long IdFormation,
-		                                        @Valid @RequestBody Formation FormationDetails) {
+				@PathVariable(value = "IdDomaine") Long IdDomaine,
+		                                        @Valid @RequestBody Formation formationDetails) {
 
-		    Formation Formation = Formationv.findById(IdFormation).orElseThrow(null);
-		    
-		   
-		    Formation.setIdFormation(FormationDetails.getIdFormation());
-		    Formation.setTitre(FormationDetails.getTitre());
-		   
-		   Formation.setAnnee(FormationDetails.getAnnee());
-		   Formation.setNb_session(FormationDetails.getNb_session());
-		   Formation.setDuree(FormationDetails.getDuree());
-		   Formation.setBudget(FormationDetails.getBudget());
-
-		    Formation updatedFormation = Formationv.save(Formation);
-		    return updatedFormation;
+		    Formation formation = Formationv.findById(IdFormation).orElseThrow(null);
+		    Domaine domaine = Domainev.findById(IdDomaine).orElseThrow(null);
+		 	formation.setTitre(formationDetails.getTitre());
+		     formation.setAnnee(formationDetails.getAnnee());
+		     formation.setNb_session(formationDetails.getNb_session());
+		     formation.setDuree(formationDetails.getDuree());
+		     formation.setBudget(formationDetails.getBudget());
+		     formation.setTypeF(formationDetails.getTypeF());
+		     formation.setDom(domaine);
+		     return Formationv.save(formation);
 		}
 		
 }

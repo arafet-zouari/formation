@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -27,7 +28,7 @@ public class Profil  implements Serializable {
 	private Long IdProfil;
 	private String Libelle;
 	
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy="p",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	private Set<Participant> participant = new HashSet<Participant>();
 	

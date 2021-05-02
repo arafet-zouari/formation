@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.formation.entities.TypeFormation;
 
 @Entity
@@ -26,7 +27,7 @@ public class Formation  implements Serializable {
 	private int Duree;
 	private float Budget;
 	private TypeFormation typeF;
-	@JsonBackReference
+	@JsonIgnore
     @ManyToOne
     private Domaine dom;
 	

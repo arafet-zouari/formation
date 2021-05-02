@@ -2,47 +2,42 @@ package com.formation.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import com.formation.entities.ERole;
 
 @Entity
-public class Role  {
-	
-	 @Id
-	    @GeneratedValue(strategy= GenerationType.IDENTITY)
-	    private long id;
+@Table(name = "roles")
+public class Role {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-	    @Column
-	    private String name;
+	@Enumerated(EnumType.STRING)
+	@Column(length = 20)
+	private ERole name;
 
-	    @Column
-	    private String description;
-	
-	    public long getId() {
-	        return id;
-	    }
+	public Role() {
 
-	    public void setId(long id) {
-	        this.id = id;
-	    }
+	}
 
-	    public String getName() {
-	        return name;
-	    }
+	public Role(ERole name) {
+		this.name = name;
+	}
 
-	    public void setName(String name) {
-	        this.name = name;
-	    }
+	public Integer getId() {
+		return id;
+	}
 
-	    public String getDescription() {
-	        return description;
-	    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-	    public void setDescription(String description) {
-	        this.description = description;
-	    }
-	
+	public ERole getName() {
+		return name;
+	}
+
+	public void setName(ERole name) {
+		this.name = name;
+	}
 }

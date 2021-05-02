@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.formation.entities.Formateur;
 import com.formation.entities.Formation;
 import com.formation.entities.Organisme;
 import com.formation.repository.OrganismeRepository;
@@ -39,36 +41,42 @@ public class OrganismeController {
 	    
 	}
 	
+	@GetMapping("/Organisme/{id}")
+	public Organisme getOrganismeById(@PathVariable(value = "id") Long Id) {
+	    return Organismev.findById(Id).orElseThrow(null);
+	          
+	}
 	
 	//pour ajouter un organisme
-		@PostMapping("/addOrganisme")
-		public Organisme createOrganisme(@Valid @RequestBody Organisme Organisme) {
-		    return Organismev.save(Organisme);
+	@RequestMapping(value="/addOrganisme", method = RequestMethod.POST)
+		public Organisme createOrganisme(@Valid @RequestBody Organisme organisme) {
+		    return Organismev.save(organisme);
 		}
 		
 	//delete Organisme by IdOrganisme
-		@DeleteMapping("/Organisme/{IdOrganisme}")
+		@RequestMapping(value="/DeleteOrganisme/{IdOrganisme}", method = RequestMethod.DELETE)
 		public ResponseEntity<?> deleteOrganisme(@PathVariable(value = "IdOrganisme") Long IdOrganisme) {
-		    Organisme Organisme = Organismev.findById(IdOrganisme).orElseThrow(null) ;
+		    Organisme organisme = Organismev.findById(IdOrganisme).orElseThrow(null) ;
 		    		//-> new ResourceNotFoundException("Organisme", "IdOrganisme", IdOrganisme));
 
 		   //OrganismeRepository.deleteByOrganisme(IdOrganisme);
-		    Organismev.delete(Organisme);
+		    Organismev.delete(organisme);
 
 		    return ResponseEntity.ok().build();
 		}
 		//update Organisme
-		@PutMapping("/IdOrganisme/{id}")
+	
+		@RequestMapping(value="/UpdateOrganisme/{id}", method = RequestMethod.PUT)
 		public Organisme updateOrganisme(@PathVariable(value = "IdOrganisme") Long IdOrganisme,
 		                                        @Valid @RequestBody Organisme OrganismeDetails) {
 
-		    Organisme Organisme = Organismev.findById(IdOrganisme).orElseThrow(null);
+		    Organisme organisme = Organismev.findById(IdOrganisme).orElseThrow(null);
 		    
 		   
-		    Organisme.setIdOrganisme(OrganismeDetails.getIdOrganisme());
-		    Organisme.setLibelle(OrganismeDetails.getLibelle());
+		  
+		    organisme.setLibelle(OrganismeDetails.getLibelle());
 		    
-		    Organisme updatedOrganisme= Organismev.save(Organisme);
+		    Organisme updatedOrganisme= Organismev.save(organisme);
 		    return updatedOrganisme;
 		}
 }

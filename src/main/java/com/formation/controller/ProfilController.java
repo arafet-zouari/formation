@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -39,7 +40,11 @@ public class ProfilController {
 	}
 	
 	
-	
+	@GetMapping("/Profil/{id}")
+	public Profil getProfilById(@PathVariable(value = "id") Long Id) {
+	    return Profilv.findById(Id).orElseThrow(null);
+	          
+	}
 	//pour ajouter un profil
 		@PostMapping("/addProfil")
 		public Profil createProfil(@Valid @RequestBody Profil Profil) {
@@ -49,11 +54,11 @@ public class ProfilController {
 	//delete Profil by IdProfil
 		@DeleteMapping("/Profil/{IdProfil}")
 		public ResponseEntity<?> deleteProfil(@PathVariable(value = "IdProfil") Long IdProfil) {
-		    Profil Profil = Profilv.findById(IdProfil).orElseThrow(null);
+		    Profil profil = Profilv.findById(IdProfil).orElseThrow(null);
 		    //-> new ResourceNotFoundException("Profil", "IdProfil", IdProfil));
 
 		   //ProfilRepository.deleteById(IdProfil);
-		    Profilv.delete(Profil);
+		    Profilv.delete(profil);
 
 		    return ResponseEntity.ok().build();
 		}
@@ -62,13 +67,12 @@ public class ProfilController {
 		public Profil updateProfil(@PathVariable(value = "IdProfil") Long IdProfil,
 		                                        @Valid @RequestBody Profil ProfilDetails) {
 
-		    Profil Profil = Profilv.findById(IdProfil).orElseThrow(null);
+		    Profil profil = Profilv.findById(IdProfil).orElseThrow(null);
 		    
-		   
-		    Profil.setIdProfil(ProfilDetails.getIdProfil());
-		    Profil.setLibelle(ProfilDetails.getLibelle());
+
+		    profil.setLibelle(ProfilDetails.getLibelle());
 		    
-		    Profil updatedProfil= Profilv.save(Profil);
+		    Profil updatedProfil= Profilv.save(profil);
 		    return updatedProfil;
 		}
 }

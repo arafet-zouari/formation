@@ -31,8 +31,20 @@ public class Participant implements Serializable {
 	private Long IdParticipant;
 	private String Nom;
 	private String Prenom;
-	private String Profil;
+
 	private TypeParticipant typeP; 
+	public Pays getPays() {
+		return pays;
+	}
+	public void setPays(Pays pays) {
+		this.pays = pays;
+	}
+	public Profil getP() {
+		return p;
+	}
+	public void setP(Profil p) {
+		this.p = p;
+	}
 	private String Email;
 	private int Tlf;
 	
@@ -43,19 +55,19 @@ public class Participant implements Serializable {
 	@JsonIgnore
 	@JsonBackReference
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   @JoinTable(name = "Particicpant_session", joinColumns = {
+    @JoinTable(name = "Particicpant_session", joinColumns = {
            @JoinColumn(name = "id_participant") }, inverseJoinColumns = {
            @JoinColumn(name = "id_session") })
    private Set<Session_de_Formation> sessions;
    @JsonBackReference
     @ManyToOne
     private Profil p;
-	public Participant(Long idParticipant, String nom, String prenom, String profil, int idOrganisme,String email, int tlf,TypeParticipant type ) {
+	public Participant(Long idParticipant, String nom, String prenom, int idOrganisme,String email, int tlf,TypeParticipant type ) {
 		super();
 		IdParticipant = idParticipant;
 		Nom = nom;
 		Prenom = prenom;
-		Profil = profil;
+	
 		Email = email;
 		Tlf = tlf;
 		typeP=type; 
@@ -82,13 +94,7 @@ public class Participant implements Serializable {
 	public void setPrenom(String prenom) {
 		Prenom = prenom;
 	}
-	public String getProfil() {
-		return Profil;
-	}
-	public void setProfil(String profil) {
-		Profil = profil;
-	}
-	public String getEmail() {
+		public String getEmail() {
 		return Email;
 	}
 	public void setEmail(String email) {

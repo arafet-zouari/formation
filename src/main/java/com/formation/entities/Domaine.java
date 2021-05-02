@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -31,7 +32,7 @@ public class Domaine implements Serializable {
 	private Long IdDomaine;
 	private String Libelle;
 	
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy="dom",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	private Set<Formation> F= new HashSet<Formation>();
 	
