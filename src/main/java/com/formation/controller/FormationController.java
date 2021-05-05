@@ -47,10 +47,56 @@ public class FormationController {
 	@RequestMapping(value="/formation", method = RequestMethod.GET)
 	public List<Formation> getAllformation() {
 		List<Formation> pro = Formationv.findAll();
-
+      
         return pro;
 	    
 	}
+	
+	
+	@RequestMapping(value="/formationById/{eid}", method = RequestMethod.GET)
+	public Formation getformationById(@PathVariable(value = "eid") Long Id) {
+		Formation formation = Formationv.findById(Id).orElseThrow(null);
+
+        return formation;
+	    
+	}
+	
+	
+	@RequestMapping(value="/DomaineObjByFormation/{IdFormation}", method = RequestMethod.GET)
+	public Domaine getDomaineObjByFormation(@PathVariable(value = "IdFormation") Long IdFormation) {
+		Formation formation = Formationv.findById(IdFormation).orElseThrow(null);
+		Domaine domaine=formation.getDom(); 
+		
+        return  domaine;
+	    
+	}
+	
+	@RequestMapping(value="/DomaineByFormation/{IdFormation}", method = RequestMethod.GET)
+	public long getDomaineByFormation(@PathVariable(value = "IdFormation") Long IdFormation) {
+		Formation formation = Formationv.findById(IdFormation).orElseThrow(null);
+		Domaine domaine=formation.getDom(); 
+		
+        return  domaine.getIdDomaine();
+	    
+	}
+	
+	
+	
+	@RequestMapping(value="/DomaineNameByFormation/{IdFormation}", method = RequestMethod.GET)
+	public String getDomaineNameByFormation(@PathVariable(value = "IdFormation") Long IdFormation) {
+		Formation formation = Formationv.findById(IdFormation).orElseThrow(null);
+		Domaine domaine=formation.getDom(); 
+		
+        return  domaine.getLibelle();
+	    
+	}
+	
+	@RequestMapping(value="/typeFormation/{IdFormation}", method = RequestMethod.GET)
+	public TypeFormation getTypeFormation(@PathVariable(value = "IdFormation") Long IdFormation) {
+		Formation formation = Formationv.findById(IdFormation).orElseThrow(null);
+	    return formation.getTypeF();
+	}
+	
 	
 	@GetMapping("/Formation/{id}")
 	public Formation getFormationById(@PathVariable(value = "id") Long Id) {
@@ -94,21 +140,23 @@ public class FormationController {
 		    return ResponseEntity.ok().build();
 		}
 		//update Formation
-		@PutMapping("/FormationId/{IdFormation}/{IdDomaine}")
+		@PutMapping("/FormationId/{IdFormation}")
 		public Formation updateFormation(@PathVariable(value = "IdFormation") Long IdFormation,
-				@PathVariable(value = "IdDomaine") Long IdDomaine,
-		                                        @Valid @RequestBody Formation formationDetails) {
+                @Valid @RequestBody Formation FormationDetails) {
 
-		    Formation formation = Formationv.findById(IdFormation).orElseThrow(null);
-		    Domaine domaine = Domainev.findById(IdDomaine).orElseThrow(null);
-		 	formation.setTitre(formationDetails.getTitre());
-		     formation.setAnnee(formationDetails.getAnnee());
-		     formation.setNb_session(formationDetails.getNb_session());
-		     formation.setDuree(formationDetails.getDuree());
-		     formation.setBudget(formationDetails.getBudget());
-		     formation.setTypeF(formationDetails.getTypeF());
-		     formation.setDom(domaine);
-		     return Formationv.save(formation);
-		}
+               Formation Formation = Formationv.findById(IdFormation).orElseThrow(null);
+
+
+               Formation.setIdFormation(FormationDetails.getIdFormation());
+Formation.setTitre(FormationDetails.getTitre());
+
+Formation.setAnnee(FormationDetails.getAnnee());
+Formation.setNb_session(FormationDetails.getNb_session());
+Formation.setDuree(FormationDetails.getDuree());
+Formation.setBudget(FormationDetails.getBudget());
+
+Formation updatedFormation = Formationv.save(Formation);
+return updatedFormation;
+}
 		
 }

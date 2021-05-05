@@ -32,15 +32,16 @@ public class Formation  implements Serializable {
     private Domaine dom;
 	
 	public Formation(Long idFormation, String titre,  int annee, int nb_session, int duree,
-			 float budget,TypeFormation type) {
+			 float budget,TypeFormation type, Domaine domaine) {
 		super();
-		IdFormation = idFormation;
-		Titre = titre;
+		this.IdFormation = idFormation;
+		this.Titre = titre;
 		this.annee = annee;
-		Nb_session = nb_session;
-		Duree = duree;
-		Budget = budget;
-		typeF=type;
+		this.Nb_session = nb_session;
+		this.Duree = duree;
+		this.Budget = budget;
+		this.typeF=type;
+		this.dom=domaine;
 	}
 	public Formation() {
 		super();
