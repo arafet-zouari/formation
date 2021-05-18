@@ -1,6 +1,7 @@
 package com.formation.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.entities.Formation;
+import com.formation.entities.Session_de_Formation;
 import com.formation.entities.TypeFormation;
 import com.formation.entities.User;
 import com.formation.repository.FormationRepository;
@@ -103,6 +105,20 @@ public class FormationController {
 	    return Formationv.findById(Id).orElseThrow(null);
 	          
 	}
+	
+	
+	@GetMapping("/FormationSession/{id}")
+	public Set<Session_de_Formation> getFormationSession(@PathVariable(value = "id") Long Id) {
+		Formation forma = Formationv.findById(Id).orElseThrow(null);
+		return forma.getSession_de_Formations(); 
+	          
+	}
+	
+	
+
+	
+	
+	
 	//pour ajouter une formation
 	    //@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 		@PostMapping("/addFormation/{Domaineid}")
@@ -154,6 +170,8 @@ Formation.setAnnee(FormationDetails.getAnnee());
 Formation.setNb_session(FormationDetails.getNb_session());
 Formation.setDuree(FormationDetails.getDuree());
 Formation.setBudget(FormationDetails.getBudget());
+Formation.setTypeF(FormationDetails.getTypeF());
+Formation.setDom(FormationDetails.getDom());
 
 Formation updatedFormation = Formationv.save(Formation);
 return updatedFormation;

@@ -59,18 +59,7 @@ public class Organisme implements Serializable {
 	public void setLibelle(String libelle) {
 		Libelle = libelle;
 	}
-	public Set<Session_de_Formation> getSession() {
-		return session;
-	}
-	public void setSession(Set<Session_de_Formation> session) {
-		this.session = session;
-	}
-	public Set<Formateur> getFormateur() {
-		return formateur;
-	}
-	public void setFormateur(Set<Formateur> formateur) {
-		this.formateur = formateur;
-	}
+
 	
 	
 	

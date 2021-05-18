@@ -68,12 +68,7 @@ public class Domaine implements Serializable {
 		// TODO Auto-generated method stub
 		
 	}
-	public Set<Formation> getF() {
-		return F;
-	}
-	public void setF(Set<Formation> f) {
-		F = f;
-	}
+	
 	@Override
 	public String toString() {
 		return "Domaine [IdDomaine=" + IdDomaine + ", Libelle=" + Libelle + ", F=" + F + "]";

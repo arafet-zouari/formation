@@ -31,6 +31,24 @@ public class Participant implements Serializable {
 	private Long IdParticipant;
 	private String Nom;
 	private String Prenom;
+	private String Email;
+	private int Tlf;
+	
+	
+	@ManyToOne
+    private Pays pays;
+	
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "Particicpant_session", joinColumns = {
+           @JoinColumn(name = "id_participant") }, inverseJoinColumns = {
+           @JoinColumn(name = "id_session") })
+   private Set<Session_de_Formation> sessions;
+   
+    @ManyToOne
+    private Profil p;
+   
+   
 
 	private TypeParticipant typeP; 
 	public Pays getPays() {
@@ -45,23 +63,7 @@ public class Participant implements Serializable {
 	public void setP(Profil p) {
 		this.p = p;
 	}
-	private String Email;
-	private int Tlf;
 	
-	@JsonBackReference
-	@ManyToOne
-    private Pays pays;
-	
-	@JsonIgnore
-	@JsonBackReference
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "Particicpant_session", joinColumns = {
-           @JoinColumn(name = "id_participant") }, inverseJoinColumns = {
-           @JoinColumn(name = "id_session") })
-   private Set<Session_de_Formation> sessions;
-   @JsonBackReference
-    @ManyToOne
-    private Profil p;
 	public Participant(Long idParticipant, String nom, String prenom, int idOrganisme,String email, int tlf,TypeParticipant type ) {
 		super();
 		IdParticipant = idParticipant;
@@ -71,6 +73,7 @@ public class Participant implements Serializable {
 		Email = email;
 		Tlf = tlf;
 		typeP=type; 
+		
 	}
 	public Participant() {
 		super();
@@ -101,12 +104,7 @@ public class Participant implements Serializable {
 		Email = email;
 	}
 	
-	public Set<Session_de_Formation> getSessions() {
-		return sessions;
-	}
-	public void setSessions(Set<Session_de_Formation> sessions) {
-		this.sessions = sessions;
-	}
+	
 	public TypeParticipant getTypeP() {
 		return typeP;
 	}
@@ -119,6 +117,14 @@ public class Participant implements Serializable {
 	public void setTlf(int tlf) {
 		Tlf = tlf;
 	}
+	public void setSessions(Set<Session_de_Formation> sessions) {
+		this.sessions = sessions;
+	}
+	public Set<Session_de_Formation> getSessions() {
+		return sessions;
+	}
+	
+	
 	
 	
 	

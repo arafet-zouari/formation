@@ -2,12 +2,19 @@ package com.formation.payload.request;
 
 import java.util.Set;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.*;
  
 public class SignupRequest {
     @NotBlank
     @Size(min = 3, max = 20)
     private String username;
+   
+    private String fname;
+
+    private String lname;
+	@Lob
+private String image;
  
     @NotBlank
     @Size(max = 50)
@@ -44,7 +51,31 @@ public class SignupRequest {
         this.password = password;
     }
     
-    public Set<String> getRole() {
+    public String getFname() {
+		return fname;
+	}
+
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+
+	public String getLname() {
+		return lname;
+	}
+
+	public void setLname(String lname) {
+		this.lname = lname;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public Set<String> getRole() {
       return this.role;
     }
     

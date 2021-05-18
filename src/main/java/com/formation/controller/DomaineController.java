@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.entities.Domaine;
+import com.formation.entities.Organisme;
 import com.formation.entities.User;
 import com.formation.repository.DomaineRepository;
+
 
 
 @RestController
@@ -52,26 +55,25 @@ public class DomaineController {
 		public Domaine createDomaine(@Valid @RequestBody Domaine Domaine) {
 		    return Domainev.save(Domaine);
 		}
-		
-	
-		@DeleteMapping("/Domaine/{IdDomaine}")
-		
-			public ResponseEntity<?> deleteDomaine(@PathVariable(value = "IdDomaine") Long IdDomaine) {
-			Domaine Domaine= Domainev.findById(IdDomaine).orElseThrow(null);
+		//delete domaine
+		@RequestMapping(value="/DeleteDomaine/{IdDomaine}", method = RequestMethod.DELETE)
+		public ResponseEntity<?> deleteDomaine(@PathVariable(value = "IdDomaine") Long IdDomaine) {
+		    Domaine domaine = Domainev.findById(IdDomaine).orElseThrow(null) ;
+		    		//-> new ResourceNotFoundException("Organisme", "IdOrganisme", IdOrganisme));
 
 		   //OrganismeRepository.deleteByOrganisme(IdOrganisme);
-			Domainev.delete(Domaine);
+		    Domainev.delete(domaine);
 
 		    return ResponseEntity.ok().build();
 		}
 	
-		@PutMapping("/IdDomaine/{id}")
-		public Domaine updateDomaine(@PathVariable(value = "IdDomaine") Long IdDomaine,
+	//@PutMapping("/UpdateDomaine/{id}")
+		@RequestMapping(value="/UpdateDomaine/{IdDomaine}", method = RequestMethod.PUT)
+		public Domaine UpdateDomaine(@PathVariable(value = "IdDomaine") Long IdDomaine,
 		                                        @Valid @RequestBody Domaine DomaineDetails) {
-
 			Domaine Domaine = Domainev.findById(IdDomaine).orElseThrow(null);
 		    
-		   
+			   
 		    Domaine.setIdDomaine(DomaineDetails.getIdDomaine());
 		    Domaine.setLibelle(DomaineDetails.getLibelle());
 		   
@@ -79,5 +81,15 @@ public class DomaineController {
 		    Domaine updatedDomaine= Domainev.save(Domaine);
 		    return updatedDomaine;
 		}
+			
+		
+		
+		
+		
+		
+		
+		
+	
+	
 	        
 }

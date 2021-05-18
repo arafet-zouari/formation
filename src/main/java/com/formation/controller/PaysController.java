@@ -1,8 +1,9 @@
 package com.formation.controller;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,61 +19,59 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.formation.entities.Participant;
-import com.formation.entities.Profil;
-import com.formation.repository.ProfilRepository;
+import com.formation.entities.Pays;
 
+import com.formation.repository.PaysRepository;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
-public class ProfilController {
+public class PaysController {
 	private static final Logger logger = LogManager.getLogger(ProfilController.class);
     @Autowired
-	ProfilRepository Profilv;
-	
-	@RequestMapping(value="/Profils", method = RequestMethod.GET)
-	public List<Profil> getAllProfil() {
-		List<Profil> pro = Profilv.findAll();
+    PaysRepository paysr;
+    
+    @RequestMapping(value="/Pays", method = RequestMethod.GET)
+	public List<Pays> getAllProfil() {
+		List<Pays> pro = paysr.findAll();
 
         return pro;
 	    
 	}
 	
 	
-	@GetMapping("/Profil/{id}")
-	public Profil getProfilById(@PathVariable(value = "id") Long Id) {
-	    return Profilv.findById(Id).orElseThrow(null);
+	@GetMapping("/Pays/{id}")
+	public Pays getPaysById(@PathVariable(value = "id") Long Id) {
+	    return paysr.findById(Id).orElseThrow(null);
 	          
 	}
-	//pour ajouter un profil
-		@PostMapping("/addProfil")
-		public Profil createProfil(@Valid @RequestBody Profil profil) {
-		    return Profilv.save(profil);
+	//pour ajouter un pays
+		@PostMapping("/addPays")
+		public Pays createPays(@Valid @RequestBody Pays pays) {
+		    return paysr.save(pays);
 		}
 		
 	//delete Profil by IdProfil
-		@DeleteMapping("/Profil/{IdProfil}")
-		public ResponseEntity<?> deleteProfil(@PathVariable(value = "IdProfil") Long IdProfil) {
-		    Profil profil = Profilv.findById(IdProfil).orElseThrow(null);
+		@DeleteMapping("/Pays/{IdPays}")
+		public ResponseEntity<?> deleteProfil(@PathVariable(value = "IdPays") Long IdPays) {
+		    Pays pays = paysr.findById(IdPays).orElseThrow(null);
 		    //-> new ResourceNotFoundException("Profil", "IdProfil", IdProfil));
-
 		   //ProfilRepository.deleteById(IdProfil);
-		    Profilv.delete(profil);
+		    paysr.delete(pays);
 
 		    return ResponseEntity.ok().build();
 		}
+		
 		//update Profil
-		@PutMapping("/ProfilId/{id}")
-		public Profil updateProfil(@PathVariable(value = "id") Long IdProfil,
-		                                        @Valid @RequestBody Profil ProfilDetails) {
+		@PutMapping("/PaysId/{id}")
+		public  Pays updateProfil(@PathVariable(value = "id") Long IdPays,
+		                                        @Valid @RequestBody Pays PaysDetails) {
 
-		    Profil profil = Profilv.findById(IdProfil).orElseThrow(null);
+			 Pays pays= paysr.findById(IdPays).orElseThrow(null);
 		    
 
-		    profil.setLibelle(ProfilDetails.getLibelle());
-		    
-		    Profil updatedProfil= Profilv.save(profil);
-		    return updatedProfil;
+			 pays.setLibele(PaysDetails.getLibele());
+		    Pays updatedPays= paysr.save(pays);
+		    return updatedPays;
 		}
 }

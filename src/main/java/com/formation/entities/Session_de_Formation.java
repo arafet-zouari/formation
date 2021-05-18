@@ -17,8 +17,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 
+import org.hibernate.FetchMode;
+import org.hibernate.annotations.Fetch;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Session_de_Formation implements Serializable {
@@ -33,19 +37,24 @@ public class Session_de_Formation implements Serializable {
 	private Date Date_Fin;
 	private int nb_participant;
 	
+	//@JsonIgnore
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "Session_Formation", joinColumns = 
+           @JoinColumn(name = "Id_Session" , referencedColumnName = "SessionId" ) , inverseJoinColumns = 
+           @JoinColumn(name = "id_Formation", referencedColumnName = "IdFormation")  )
 	@JsonIgnore
-
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "Session_Formation", joinColumns = {
-           @JoinColumn(name = "Id_Session") }, inverseJoinColumns = {
-           @JoinColumn(name = "id_Formation") })
    private Set<Formation> formations;
+	
+	
+	@ManyToMany(mappedBy = "sessions")
+    private Set<Participant> participant ;
 
-	@JsonIgnore
+	//@JsonIgnore
     @ManyToOne
     private Formateur formateur;
 	
-	@JsonIgnore
+	//@JsonIgnore
     @ManyToOne
     private Organisme org;
 	public Session_de_Formation(Long idSession, String lieu,Date date_Debut, Date date_Fin, int nb_participant) {
@@ -91,12 +100,7 @@ public class Session_de_Formation implements Serializable {
 	public void setIdSession(Long idSession) {
 		IdSession = idSession;
 	}
-	public Set<Formation> getFormations() {
-		return formations;
-	}
-	public void setFormations(Set<Formation> formations) {
-		this.formations = formations;
-	}
+	
 	public Formateur getFormateur() {
 		return formateur;
 	}
@@ -109,9 +113,25 @@ public class Session_de_Formation implements Serializable {
 	public void setOrg(Organisme org) {
 		this.org = org;
 	}
+	public Set<Participant> getParticipant() {
+		return participant;
+	}
+	public void setParticipant(Set<Participant> participant) {
+		this.participant = participant;
+	}
+	
+	public void setFormations(Set<Formation> formations) {
+		this.formations = formations;
+	}
+	public Set<Formation> getFormations() {
+		return formations;
+	}
 	
 	
-	
+	public void addSession(Formation forma) {
+		formations.add(forma);
+        forma.getSession_de_Formations().add(this); 
+    }
 
 
 	

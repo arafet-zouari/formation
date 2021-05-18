@@ -83,7 +83,7 @@ public class UserController {
 	    user.setPassword(userDetails.getPassword());
 	    user.setFname(userDetails.getFname());
 	    user.setLname(userDetails.getLname());
-	    user.setImageuser(userDetails.getImageuser());
+	    user.setImage(userDetails.getImage());
 	    
 	    User updatedUser = userR.save(user);
 	    return updatedUser;

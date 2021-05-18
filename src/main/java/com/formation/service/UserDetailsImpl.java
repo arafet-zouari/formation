@@ -13,30 +13,57 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.formation.entities.User;
 
 
+
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getFname() {
+		return fname;
+	}
+
+	public String getLname() {
+		return lname;
+	}
+
+	
+
+	public String getImage() {
+		return image;
+	}
 
 	private Long id;
 
 	private String username;
 
 	private String email;
+	private String fname;
+	private String lname;
+	//@Lob
+	private String image;
 
 	@JsonIgnore
 	private String password;
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(Long id, String username, String email, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+		public UserDetailsImpl(Long id, String username, String email, String fname, String lname, 
+		 String image, String password, Collection<? extends GrantedAuthority> authorities) {
+		super();
 		this.id = id;
 		this.username = username;
 		this.email = email;
+		this.fname = fname;
+		this.lname = lname;
+		this.image = image;
 		this.password = password;
 		this.authorities = authorities;
 	}
 
-	public static UserDetailsImpl build(User user) {
+		public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName().name()))
 				.collect(Collectors.toList());
@@ -45,7 +72,10 @@ public class UserDetailsImpl implements UserDetails {
 				user.getId(), 
 				user.getUsername(), 
 				user.getEmail(),
-				user.getPassword(), 
+				user.getFname(),
+				user.getLname(), 
+				user.getImage(), 
+				user.getPassword(),
 				authorities);
 	}
 

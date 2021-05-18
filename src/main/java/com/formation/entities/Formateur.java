@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -36,16 +37,16 @@ public class Formateur implements Serializable {
 	private String prenom;
 	private String Email;
 	private int Tlf;
-	private String Type;
-	@JsonBackReference
+	private TypeFormateur Type;
+	@JsonIgnore
 	@OneToMany(mappedBy="formateur",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	private Set<Session_de_Formation> sess = new HashSet<Session_de_Formation>();
 	
-	@JsonBackReference
+	
     @ManyToOne
     private Organisme organismes;
 
-	public Formateur(Long idFormateur, String nom, String prenom, String email, int tlf, String type) {
+	public Formateur(Long idFormateur, String nom, String prenom, String email, int tlf, TypeFormateur type) {
 		super();
 		IdFormateur = idFormateur;
 		this.nom = nom;
@@ -89,10 +90,10 @@ public class Formateur implements Serializable {
 		Tlf = tlf;
 	}
 	
-	public String getType() {
+	public TypeFormateur getType() {
 		return Type;
 	}
-	public void setType(String type) {
+	public void setType(TypeFormateur type) {
 		Type = type;
 	}
 	public Set<Session_de_Formation> getSess() {

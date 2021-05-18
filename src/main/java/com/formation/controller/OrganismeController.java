@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class OrganismeController {
 	//private static final Logger logger = LogManager.getLogger(OrganismeController.class);
 	@Autowired
 	OrganismeRepository Organismev;
+	
 	
 	@RequestMapping(value="/organismes", method = RequestMethod.GET)
 	public List<Organisme> getAllOrganisme() {
@@ -65,8 +67,8 @@ public class OrganismeController {
 		    return ResponseEntity.ok().build();
 		}
 		//update Organisme
-	
-		@RequestMapping(value="/UpdateOrganisme/{id}", method = RequestMethod.PUT)
+		//@PreAuthorize("hasRole('ADMIN')")
+		@RequestMapping(value="/updateOrganisme/{IdOrganisme}", method = RequestMethod.PUT)
 		public Organisme updateOrganisme(@PathVariable(value = "IdOrganisme") Long IdOrganisme,
 		                                        @Valid @RequestBody Organisme OrganismeDetails) {
 

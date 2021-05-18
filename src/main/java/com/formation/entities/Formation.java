@@ -1,17 +1,24 @@
 package com.formation.entities;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.formation.entities.TypeFormation;
+
+import models.SessiondeFormationModel;
 
 @Entity
 public class Formation  implements Serializable {
@@ -27,9 +34,13 @@ public class Formation  implements Serializable {
 	private int Duree;
 	private float Budget;
 	private TypeFormation typeF;
-	@JsonIgnore
+	//@JsonIgnore
     @ManyToOne
     private Domaine dom;
+    
+ 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "formations", cascade =  {CascadeType.ALL})
+    private Set<Session_de_Formation> session_de_Formations ;
 	
 	public Formation(Long idFormation, String titre,  int annee, int nb_session, int duree,
 			 float budget,TypeFormation type, Domaine domaine) {
@@ -96,6 +107,15 @@ public class Formation  implements Serializable {
 	}
 	public void setDom(Domaine dom) {
 		this.dom = dom;
+	}
+	
+	
+	
+	public Set<Session_de_Formation> getSession_de_Formations() {
+		return session_de_Formations;
+	}
+	public void setSession_de_Formations(Set<Session_de_Formation> session_de_Formations) {
+		this.session_de_Formations = session_de_Formations;
 	}
 	@Override
 	public String toString() {

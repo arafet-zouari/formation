@@ -53,22 +53,18 @@ public class User  {
 	private String password;
 	private String fname;
 	private String lname;
-	private String imageuser;
+	@Lob
+	private String image;
 	
 	
 		@JsonIgnore
-		@JsonBackReference
 		@ManyToMany(fetch = FetchType.LAZY)
 		@JoinTable(	name = "user_roles", 
 					joinColumns = @JoinColumn(name = "user_id"), 
 					inverseJoinColumns = @JoinColumn(name = "role_id"))
 		private Set<Role> roles = new HashSet<>();
 
-	public User(String username, String email, String password) {
-	this.username = username;
-	this.email = email;
-    this.password = password;
-		}
+	
 	public Long getId() {
 		return id;
 	}
@@ -81,7 +77,11 @@ public class User  {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setImage(String image) {
+		this.image = image;
+	}
+
+	public void setUsername(String username) {
         this.username = username;
     }
 
@@ -94,6 +94,10 @@ public class User  {
 	public String getPassword() {
 		return password;
 	}
+	public String getImage() {
+		return image;
+	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -112,23 +116,11 @@ public class User  {
 
 
 
-	public String getImageuser() {
-		return imageuser;
-	}
+	
 
 
 
-	public void setImageuser(String imageuser) {
-		this.imageuser = imageuser;
-	}
 
-
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", password=" + password + ", fname=" + fname + ", lname=" + lname
-				+ ", imageuser=" + imageuser + "]";
-	}
 	public Set<Role> getRoles() {
         return roles;
     }
@@ -138,15 +130,14 @@ public class User  {
     }
 
 	public User(  String username,  @Email String email,
-			 String password, String fname, String lname, String imageuser, Set<Role> roles) {
+			 String password, String fname, String lname, String imageuser) {
 		super();
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.fname = fname;
 		this.lname = lname;
-		this.imageuser = imageuser;
-		this.roles = roles;
+		this.image= imageuser;
 	}
 	
 	
